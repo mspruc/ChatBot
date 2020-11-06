@@ -5,6 +5,7 @@ public class WordList {
 
     WordList(String[] wordList){
         this.wordList = wordList;
+        QuestionHandler.wordListList.add(this);
     }
 
     void compareToList (ResponseWord responseWord){

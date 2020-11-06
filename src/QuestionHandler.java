@@ -5,7 +5,7 @@ public class QuestionHandler {
     //8==========================================================================================================D
     String[] heyWords = {"greetings" , "hi", "hello", "hey"};                                                  //|
     WordList heyWordList = new WordList(heyWords);                                                             //|
-    String[] questionWords = {"who","why","what", "how"};
+    String[] questionWords = {"who","why","what", "how","?"};
     WordList questionWordList = new WordList(questionWords);
     String[] youWords = {"you","your","yours"};
     WordList youWordList = new WordList(youWords);
@@ -15,7 +15,8 @@ public class QuestionHandler {
     WordList beingWordList = new WordList(beingWords);
     String[] badWords = {"Fuck","Shit","Fucking","retard"};
     WordList badWordList = new WordList(badWords);
-    WordList[] wordListList = {heyWordList,questionWordList,youWordList,meWordList,beingWordList,badWordList};
+    static ArrayList<WordList> wordListList = new ArrayList<>();
+
     String[] response;
     Profile profile = new Profile();
 
@@ -49,6 +50,10 @@ public class QuestionHandler {
         for (String word : response) {
             responseWord = new ResponseWord(word);
 
+            if(word.contains("?")){
+                questionWordList.isInList = true;
+            }
+
             for (WordList wordList : wordListList) {
                 wordList.compareToList(responseWord);
 
@@ -56,8 +61,8 @@ public class QuestionHandler {
                     wordList.isInList = true;
                 }
             }
+            System.out.println(questionWordList.isInList);
         }
-
 
         if(heyWordList.isInList){
             if(randomInt == 0) {
@@ -83,6 +88,10 @@ public class QuestionHandler {
             if (randomInt == 0) System.out.println("Wow, asking me a question are you? ");
             else if (randomInt == 1) System.out.println("What do you think? ");
             else if (randomInt == 2) System.out.println("I don't know. Ask someone else.");
+        }
+
+        if(questionWordList.isInList && !beingWordList.isInList){
+            System.out.println("I don't know CAN you?");
         }
 
         if (youWordList.isInList) System.out.println("We are talking about you, not me. ");
