@@ -1,6 +1,6 @@
 public class WordList {
     String[] wordList;
-    boolean isList;
+    boolean isInList = false;
 
 
     WordList(String[] wordList){
