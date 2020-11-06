@@ -39,6 +39,10 @@ public class QuestionHandler {
 
 
     void analyseResponse() throws InterruptedException {
+        for (WordList wordList : wordListList) {
+            wordList.isInList = false;
+        }
+
         int randomInt = (int) (Math.random() * 3);
         ResponseWord responseWord;
 
@@ -48,7 +52,7 @@ public class QuestionHandler {
             for (WordList wordList : wordListList) {
                 wordList.compareToList(responseWord);
 
-                if(!wordList.isInList){
+                if(responseWord.wordList == wordList && !wordList.isInList){
                     wordList.isInList = true;
                 }
             }
@@ -93,8 +97,7 @@ public class QuestionHandler {
                 && !questionWordList.isInList
                 && !badWordList.isInList
                 && !beingWordList.isInList
-            ) System.out.println("How are you?");
-
+        ) System.out.println("How are you?");
     }
 }
 
