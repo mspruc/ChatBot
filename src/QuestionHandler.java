@@ -11,11 +11,13 @@ public class QuestionHandler {
     WordList youWordList = new WordList(youWords);
     String[] meWords = {"me","myself","my","I"};
     WordList meWordList = new WordList(meWords);
-    String[] beingWords = {"am","I'm","im"};
+    String[] beingWords = {"am","I'm","im", "you're", "youre"};
     WordList beingWordList = new WordList(beingWords);
     String[] badWords = {"Fuck","Shit","Fucking","retard"};
     WordList badWordList = new WordList(badWords);
     static ArrayList<WordList> wordListList = new ArrayList<>();
+    String[] memoryResponse;
+    String memoryAnswer;
 
     String[] response;
     Profile profile = new Profile();
@@ -34,7 +36,6 @@ public class QuestionHandler {
     void fetchInput(){
         Scanner in = new Scanner(System.in);
         String inputLine = in.nextLine();
-
         response = inputLine.split(" ");
     }
 
@@ -45,7 +46,7 @@ public class QuestionHandler {
         }
 
         int randomInt = (int) (Math.random() * 3);
-        ResponseWord responseWord;
+        ResponseWord responseWord = null;
 
         for (String word : response) {
             responseWord = new ResponseWord(word);
@@ -61,7 +62,6 @@ public class QuestionHandler {
                     wordList.isInList = true;
                 }
             }
-            System.out.println(questionWordList.isInList);
         }
 
         if(heyWordList.isInList){
@@ -81,7 +81,7 @@ public class QuestionHandler {
                 TimeUnit.SECONDS.sleep(1);
                 System.exit(0);
             }
-            System.out.println("Please don't swear. This is your last chance ");
+            System.out.println("Please don't swear. This is your last chance! ");
         }
 
         if (questionWordList.isInList && !youWordList.isInList && !meWordList.isInList) {
@@ -90,15 +90,24 @@ public class QuestionHandler {
             else if (randomInt == 2) System.out.println("I don't know. Ask someone else.");
         }
 
-        if(questionWordList.isInList && !beingWordList.isInList){
+
+        if(questionWordList.isInList && !beingWordList.isInList ){
             System.out.println("I don't know CAN you?");
         }
 
-        if (youWordList.isInList) System.out.println("We are talking about you, not me. ");
 
-        if (meWordList.isInList) System.out.println("Wow, you're really self-centered. ");
 
-        if (beingWordList.isInList) System.out.println("You sure?");
+        if(contains("who", response) && contains("are", response) && contains("you", response)){
+            System.out.println("I am nothing");
+        }
+
+        if (youWordList.isInList && !meWordList.isInList) System.out.println("We are talking about you, not me. ");
+
+        if (meWordList.isInList && !youWordList.isInList) System.out.println("Wow, you're really self-centered. ");
+
+        if (beingWordList.isInList && !questionWordList.isInList) System.out.println("You sure?");
+
+
 
         if (!heyWordList.isInList
                 && !meWordList.isInList
@@ -107,6 +116,17 @@ public class QuestionHandler {
                 && !badWordList.isInList
                 && !beingWordList.isInList
         ) System.out.println("How are you?");
+
+        memoryResponse = response;
+    }
+
+    boolean contains(String word, String[] response){
+        for (String responseWord: response) {
+            if(responseWord.equalsIgnoreCase(word)){
+                return true;
+            }
+        }
+       return false;
     }
 }
 
