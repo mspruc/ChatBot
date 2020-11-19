@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -11,21 +12,23 @@ public class QuestionHandler {
     WordList youWordList = new WordList(youWords);
     String[] meWords = {"me","myself","my","I"};
     WordList meWordList = new WordList(meWords);
-    String[] beingWords = {"am","I'm","im", "you're", "youre"};
+    String[] beingWords = {"am","I'm","im", "you're", "youre","is"};
     WordList beingWordList = new WordList(beingWords);
     String[] badWords = {"Fuck","Shit","Fucking","retard"};
     WordList badWordList = new WordList(badWords);
     static ArrayList<WordList> wordListList = new ArrayList<>();
     String[] memoryResponse;
     String memoryAnswer;
-
     String[] response;
+    String answer;
     Profile profile = new Profile();
 
     boolean isFinished;
     int swearCounter;
 
     void loop() throws InterruptedException {
+        QuestionList.printQuestion();
+
         while(!isFinished){
             fetchInput();
             analyseResponse();
@@ -36,6 +39,7 @@ public class QuestionHandler {
     void fetchInput(){
         Scanner in = new Scanner(System.in);
         String inputLine = in.nextLine();
+        answer = inputLine;
         response = inputLine.split(" ");
     }
 
@@ -45,9 +49,12 @@ public class QuestionHandler {
             wordList.isInList = false;
         }
 
+        //Choosing multiple sentences at random.
         int randomInt = (int) (Math.random() * 3);
-        ResponseWord responseWord = null;
 
+        ResponseWord responseWord;
+
+        //scans through your response and checks which words belong to which list.
         for (String word : response) {
             responseWord = new ResponseWord(word);
 
@@ -62,6 +69,23 @@ public class QuestionHandler {
                     wordList.isInList = true;
                 }
             }
+        }
+
+        //all the cases for chatbot's responses,
+        // higher position for the if statement indicates priority,
+        // as they may have return functions.
+        if(contains("name",response)
+                && meWordList.isInList
+                && beingWordList.isInList){
+
+            if(profile.name == null){
+                profile.name = nextWord("is",response);
+                System.out.println("Great, hello " + profile.name);
+            } else {
+                System.out.println("But I thought your name was " + profile.name);
+            }
+
+            return;
         }
 
         if(heyWordList.isInList){
@@ -90,14 +114,13 @@ public class QuestionHandler {
             else if (randomInt == 2) System.out.println("I don't know. Ask someone else.");
         }
 
-
         if(questionWordList.isInList && !beingWordList.isInList ){
             System.out.println("I don't know CAN you?");
         }
 
-
-
-        if(contains("who", response) && contains("are", response) && contains("you", response)){
+        if(contains("who", response)
+                && contains("are", response)
+                && contains("you", response)){
             System.out.println("I am nothing");
         }
 
@@ -107,17 +130,26 @@ public class QuestionHandler {
 
         if (beingWordList.isInList && !questionWordList.isInList) System.out.println("You sure?");
 
-
-
         if (!heyWordList.isInList
                 && !meWordList.isInList
                 && !youWordList.isInList
                 && !questionWordList.isInList
                 && !badWordList.isInList
                 && !beingWordList.isInList
-        ) System.out.println("How are you?");
+        ) QuestionList.printQuestion();
 
+        //Save your last line in memory
         memoryResponse = response;
+        memoryAnswer = answer;
+    }
+
+    String nextWord(String startWord, String[] response){
+        for (int i = 0; i < response.length; i++) {
+            if(response[i+1] != null && startWord.equalsIgnoreCase(response[i])){
+                return response[i+1];
+            }
+        }
+        return "";
     }
 
     boolean contains(String word, String[] response){
