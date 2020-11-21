@@ -3,16 +3,15 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class QuestionHandler {
-    //8==========================================================================================================D
-    String[] heyWords = {"greetings" , "hi", "hello", "hey"};                                                  //|
-    WordList heyWordList = new WordList(heyWords);                                                             //|
+    String[] heyWords = {"greetings" , "hi", "hello", "hey"};
+    WordList heyWordList = new WordList(heyWords);
     String[] questionWords = {"who","why","what", "how","?"};
     WordList questionWordList = new WordList(questionWords);
     String[] youWords = {"you","your","yours"};
     WordList youWordList = new WordList(youWords);
     String[] meWords = {"me","myself","my","I"};
     WordList meWordList = new WordList(meWords);
-    String[] beingWords = {"am","I'm","im", "you're", "youre","is"};
+    String[] beingWords = {"am","I'm","im", "you're","youre","is"};
     WordList beingWordList = new WordList(beingWords);
     String[] badWords = {"Fuck","Shit","Fucking","retard"};
     WordList badWordList = new WordList(badWords);
@@ -84,7 +83,32 @@ public class QuestionHandler {
             } else {
                 System.out.println("But I thought your name was " + profile.name);
             }
+            return;
+        }
 
+        if(contains("age",response)
+                &&beingWordList.isInList
+                &&meWordList.isInList){
+
+            if(profile.age == 0){
+                profile.age = Integer.parseInt(nextWord("is",response));
+                System.out.println("Wow you're only " + profile.age);
+            } else {
+                System.out.println("But I thought your age was " + profile.age);
+            }
+            return;
+        }
+
+        if(contains("years",response)
+                &&beingWordList.isInList
+                &&meWordList.isInList){
+
+            if(profile.age == 0){
+                profile.age = Integer.parseInt(nextWord("am",response));
+                System.out.println("Wow you're only " + profile.age);
+            } else {
+                System.out.println("But I thought your age was " + profile.age);
+            }
             return;
         }
 
@@ -114,14 +138,13 @@ public class QuestionHandler {
             else if (randomInt == 2) System.out.println("I don't know. Ask someone else.");
         }
 
-        if(questionWordList.isInList && !beingWordList.isInList ){
-            System.out.println("I don't know CAN you?");
-        }
-
-        if(contains("who", response)
-                && contains("are", response)
-                && contains("you", response)){
-            System.out.println("I am nothing");
+        //Can i responses
+        if(contains("can",response)){
+            if(response.length> 1 && "i".equalsIgnoreCase(nextWord("can",response))){
+                System.out.println("I don't know CAN you?");
+            } else if (questionWordList.isInList){
+                System.out.println("I don't know CAN you?");
+            }
         }
 
         if (youWordList.isInList && !meWordList.isInList) System.out.println("We are talking about you, not me. ");
@@ -137,6 +160,10 @@ public class QuestionHandler {
                 && !badWordList.isInList
                 && !beingWordList.isInList
         ) QuestionList.printQuestion();
+
+        if (youWordList.isInList && meWordList.isInList){
+            System.out.println("OK.");
+        }
 
         //Save your last line in memory
         memoryResponse = response;

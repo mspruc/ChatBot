@@ -2,7 +2,6 @@ public class WordList {
     String[] wordList;
     boolean isInList = false;
 
-
     WordList(String[] wordList){
         this.wordList = wordList;
         QuestionHandler.wordListList.add(this);

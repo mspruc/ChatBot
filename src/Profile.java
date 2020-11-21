@@ -3,7 +3,6 @@ public class Profile {
     int age;
     String occupation;
     String gender;
-    String dob;
     String name;
 
     Profile(){}

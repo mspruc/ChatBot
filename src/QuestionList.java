@@ -4,7 +4,6 @@ public class QuestionList {
     public static String[] questionList = {
             "Hello there, greetings... My name is Chad-bot. What is your name?",
             "How old are you?",
-            "WHEN WERE YOU BORN?!?!?!?!",
             "What's your primary occupation?",
             "Are you male, female or non-binary?",
             "How are you doing?"
@@ -14,6 +13,8 @@ public class QuestionList {
         if(counter < questionList.length-1){
             System.out.println(questionList[counter]);
             counter++;
+        } else {
+            System.out.println("...");
         }
     }
 }
