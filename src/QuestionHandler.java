@@ -17,7 +17,7 @@ public class QuestionHandler {
     WordList badWordList = new WordList(badWords);
     String[] genderWords = {"male", "female", "non-binary", "gender"};
     WordList genderWordList = new WordList(genderWords);
-    String[] occupationWords = {"student", "employee"};
+    String[] occupationWords = {"studying", "employed", "unemployed", "occupation"};
     WordList occupationsWordList = new WordList(occupationWords);
     static ArrayList<WordList> wordListList = new ArrayList<>();
     String[] memoryResponse;
@@ -85,6 +85,47 @@ public class QuestionHandler {
             if(!(profile.occupation == null)) System.out.println("Occupation : " + profile.occupation);
         }
 
+
+        if(occupationsWordList.isInList
+                && meWordList.isInList
+                && beingWordList.isInList
+                && !questionWordList.isInList){
+            if(profile.occupation == null){
+                profile.occupation = nextWord("am", response);
+                System.out.println("Oh, you're " + profile.occupation + "? Okay then.");
+            }
+            else{
+                String tempOccupation = nextWord("am",response);
+                if (tempOccupation.equalsIgnoreCase(profile.occupation)){
+                    System.out.println("I know that, you don't have to tell me that anymore.");
+                } else{
+                    System.out.println("Weren't you " + profile.occupation + "?");
+                    Scanner in = new Scanner(System.in);
+                    String[] inputLine = in.nextLine().split(" ");
+                    if (contains("no",inputLine)){
+                        System.out.println("Tell me what your occupation is then.");
+                        inputLine = in.nextLine().split(" ");
+                        profile.occupation = nextWord("am", inputLine);
+                        System.out.println("Thanks for telling me.");
+                    } else{
+                        System.out.println("Okay then.");
+                    }
+                }
+            }
+            return;
+        }
+
+        if(occupationsWordList.isInList
+                && meWordList.isInList
+                && beingWordList.isInList
+                && questionWordList.isInList) {
+            if (profile.occupation == null) {
+                System.out.println("You haven't told me yet");
+            }
+            else{
+                System.out.println("You are currently " + profile.occupation + ".");
+            }
+        }
 
         if(genderWordList.isInList
                 && !youWordList.isInList){
