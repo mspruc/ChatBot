@@ -115,10 +115,7 @@ public class QuestionHandler {
             return;
         }
 
-        if(occupationsWordList.isInList
-                && meWordList.isInList
-                && beingWordList.isInList
-                && questionWordList.isInList) {
+        if(occupationsWordList.isInList && meWordList.isInList && beingWordList.isInList) {
             if (profile.occupation == null) {
                 System.out.println("You haven't told me yet");
             }
@@ -129,8 +126,15 @@ public class QuestionHandler {
 
         if(genderWordList.isInList
                 && !youWordList.isInList){
-            if(profile.gender == null){
+            //TODO this is a bad way to handle multiple cases when we already have a list of all of these
+            if(profile.gender == null && nextWord("am", response) != null){
                 profile.gender = nextWord("am", response);
+                System.out.println("Okay, I will remember that.");
+            } else if (profile.gender == null && nextWord("im", response) != null) {
+                profile.gender = nextWord("im", response);
+                System.out.println("Okay, I will remember that.");
+            } else if (profile.gender == null && nextWord("i'm", response) != null) {
+                profile.gender = nextWord("i'm", response);
                 System.out.println("Okay, I will remember that.");
             } else{
                 System.out.println("Aren't you " + profile.gender + "?");
@@ -151,6 +155,8 @@ public class QuestionHandler {
         //all the cases for chatbot's responses,
         // higher position for the if statement indicates priority,
         // as they may have return functions.
+
+        //name path
         if(contains("name",response)
                 && meWordList.isInList
                 && beingWordList.isInList
@@ -213,23 +219,7 @@ public class QuestionHandler {
             if(profile.age == 0){
                 System.out.println("You haven't told me yet");
             } else {
-                System.out.println("Aren't you " + profile.age + " years old?");
-                Scanner in = new Scanner(System.in);
-                String[] inputLine = in.nextLine().split(" ");
-                if(contains("no", inputLine)){
-                    System.out.println("Would you like to change your age then?");
-                    inputLine = in.nextLine().split(" ");
-                    if (contains("yes", inputLine)){
-                        System.out.println("Write your age again");
-                        inputLine = in.nextLine().split(" ");
-                        profile.age = Integer.parseInt(nextWord("am", inputLine));
-                        System.out.println("Okay you are " + profile.age + " years old");
-                    } else {
-                        System.out.println("Okay then");
-                    }
-                } else {
-                    System.out.println("Okay then");
-                }
+                testQuestion();
             }
 
             return;
@@ -244,23 +234,7 @@ public class QuestionHandler {
                 profile.age = Integer.parseInt(nextWord("am",response));
                 System.out.println("Wow you're only " + profile.age);
             } else {
-                System.out.println("Aren't you " + profile.age + " years old?");
-                Scanner in = new Scanner(System.in);
-                String[] inputLine = in.nextLine().split(" ");
-                if(contains("no", inputLine)){
-                    System.out.println("Would you like to change your age then?");
-                    inputLine = in.nextLine().split(" ");
-                    if (contains("yes", inputLine)){
-                        System.out.println("Write your age again");
-                        inputLine = in.nextLine().split(" ");
-                        profile.age = Integer.parseInt(nextWord("am", inputLine));
-                        System.out.println("Okay you are " + profile.age + " years old");
-                    } else {
-                        System.out.println("Okay then");
-                    }
-                } else {
-                    System.out.println("Okay then");
-                }
+                testQuestion();
             }
 
             return;
@@ -301,7 +275,15 @@ public class QuestionHandler {
             }
         }
 
-        if (youWordList.isInList && !meWordList.isInList) System.out.println("We are talking about you, not me. ");
+        //if (youWordList.isInList && !meWordList.isInList) System.out.println("We are talking about you, not me. ");
+
+        if(youWordList.isInList && !meWordList.isInList){
+            if      (randomInt == 0) System.out.println("We are talking about you, not me. ");
+            else if (randomInt == 1) System.out.println("Wow... don't make it personal...");
+            else if (randomInt == 2) System.out.println("I'm not going to respond to that.");
+        }
+
+
 
         if (meWordList.isInList && !youWordList.isInList) System.out.println("Wow, you're really self-centered. ");
 
@@ -315,25 +297,49 @@ public class QuestionHandler {
                 && !beingWordList.isInList
         ) Profile.printQuestion();
 
-        if (youWordList.isInList && meWordList.isInList){
-            System.out.println("OK.");
+        if(youWordList.isInList && meWordList.isInList){
+            if      (randomInt == 0) System.out.println("OK.");
+            else if (randomInt == 1) System.out.println("Hmmm...");
+            else if (randomInt == 2) System.out.println("Well...");
         }
+
 
         //Save your last line in memory
         memoryResponse = response;
         memoryAnswer = answer;
     }
 
+    private void testQuestion() {
+        System.out.println("Aren't you " + profile.age + " years old?");
+        Scanner in = new Scanner(System.in);
+        String[] inputLine = in.nextLine().split(" ");
+        if(contains("no", inputLine)){
+            System.out.println("Would you like to change your age then?");
+            inputLine = in.nextLine().split(" ");
+            if (contains("yes", inputLine)){
+                System.out.println("Write your age again");
+                inputLine = in.nextLine().split(" ");
+                profile.age = Integer.parseInt(nextWord("am", inputLine));
+                System.out.println("Okay you are " + profile.age + " years old");
+            } else {
+                System.out.println("Okay then");
+            }
+        } else {
+            System.out.println("Okay then");
+        }
+    }
+
     String nextWord(String startWord, String[] response){
         if (response.length < 2){
             return response[0];
         }
+
         for (int i = 0; i < response.length; i++) {
-            if(response[i+1] != null && startWord.equalsIgnoreCase(response[i])){
+            if(i+1 < response.length && response[i+1] != null && startWord.equalsIgnoreCase(response[i])){
                 return response[i+1];
             }
         }
-        return "";
+        return null;
     }
 
 
