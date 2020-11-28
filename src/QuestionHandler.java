@@ -3,27 +3,18 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class QuestionHandler {
-    String[] heyWords = {"greetings" , "hi", "hello", "hey"};
-    WordList heyWordList = new WordList(heyWords);
-    String[] questionWords = {"who","why","what", "how","?"};
-    WordList questionWordList = new WordList(questionWords);
-    String[] youWords = {"you","your","yours"};
-    WordList youWordList = new WordList(youWords);
-    String[] meWords = {"me","myself","my","I", "i?"};
-    WordList meWordList = new WordList(meWords);
-    String[] beingWords = {"am","I'm","im", "you're","youre","is"};
-    WordList beingWordList = new WordList(beingWords);
-    String[] badWords = {"Fuck","Shit","Fucking","retard"};
-    WordList badWordList = new WordList(badWords);
-    String[] genderWords = {"male", "female", "non-binary", "gender"};
-    WordList genderWordList = new WordList(genderWords);
-    String[] occupationWords = {"studying", "employed", "unemployed", "occupation"};
-    WordList occupationsWordList = new WordList(occupationWords);
+    WordList heyWordList         = new WordList(new String[]{"greetings" , "hi", "hello", "hey"});
+    WordList questionWordList    = new WordList(new String[]{"who","why","what", "how","?"});
+    WordList youWordList         = new WordList(new String[]{"you","your","yours"});
+    WordList meWordList          = new WordList(new String[]{"me","myself","my","I", "i?"});
+    WordList beingWordList       = new WordList(new String[]{"am","I'm","im", "you're","youre","is"});
+    WordList badWordList         = new WordList(new String[]{"Fuck","Shit","Fucking","retard"});
+    WordList genderWordList      = new WordList(new String[]{"male", "female", "non-binary", "gender"});
+    WordList occupationsWordList = new WordList(new String[]{"studying", "employed", "unemployed", "occupation"});
     static ArrayList<WordList> wordListList = new ArrayList<>();
-    String[] memoryResponse;
-    String memoryAnswer;
-    String[] response;
-    String answer;
+    String[] memoryResponse, response;
+    String memoryAnswer,answer;
+
     Profile profile = new Profile();
 
     boolean isFinished;
