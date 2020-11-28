@@ -211,7 +211,6 @@ public class QuestionHandler {
             return;
         }
 
-
         if(questionWordList.isInList
                 && contains("old", response)
                 && meWordList.isInList){
@@ -241,13 +240,9 @@ public class QuestionHandler {
         }
 
         if(heyWordList.isInList){
-            if(randomInt == 0) {
-                System.out.println("Hello to you too. ");
-            } else if(randomInt == 1){
-                System.out.println("Hi there. ");
-            } else if(randomInt == 2) {
-                System.out.println("Hey. ");
-            }
+            if      (randomInt == 0) System.out.println("Hello to you too. ");
+            else if (randomInt == 1) System.out.println("Hi there. ");
+            else if (randomInt == 2) System.out.println("Hey. ");
         }
 
         if (badWordList.isInList) {
