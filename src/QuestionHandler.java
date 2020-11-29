@@ -1,4 +1,4 @@
-import java.sql.SQLOutput;
+
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -324,6 +324,7 @@ public class QuestionHandler {
         memoryAnswer = answer;
     }
 
+    //Function that checks the next word in response
     String nextWord(String startWord, String[] response){
         if (response.length < 2){
             return response[0];
@@ -336,7 +337,7 @@ public class QuestionHandler {
         return "";
     }
 
-
+   //Function that checks for a specific word in response
     boolean contains(String word, String[] response){
         for (String responseWord: response) {
             if(responseWord.equalsIgnoreCase(word)){
