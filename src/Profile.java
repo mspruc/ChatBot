@@ -1,5 +1,6 @@
 public class Profile {
-    //here we could put the age, work, dob etc. of the person chatting with bot
+    //here we have the difference qualities of the profile such as age
+    //Profile also contains the questionlist that can help creating profile
     int age;
     String occupation;
     String gender;
@@ -8,6 +9,7 @@ public class Profile {
     Profile(){}
     static int counter = 0;
 
+    //Helps creating profile
     public static String[] questionList = {
             "Hello there, greetings... My name is Chad-bot. What is your name?",
             "How old are you?",
@@ -16,6 +18,7 @@ public class Profile {
             "How are you doing?"
     };
 
+    //Prints the next question
     static void printQuestion(){
         if(counter < questionList.length-1){
             System.out.println(questionList[counter]);

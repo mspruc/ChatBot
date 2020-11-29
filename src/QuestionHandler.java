@@ -66,6 +66,12 @@ public class QuestionHandler {
         }
 
 
+        //all the cases for chatbot's responses,
+        // higher position for the if statement indicates priority,
+        // as they may have return functions.
+
+
+        //Should catch questions about the user itself that has to do with profile
         if(contains("who", response)
                 && meWordList.isInList
                 && beingWordList.isInList){
@@ -76,7 +82,7 @@ public class QuestionHandler {
             if(!(profile.occupation == null)) System.out.println("Occupation : " + profile.occupation);
         }
 
-
+        //Responses to user talking about users occupation - also saves the occupation of user for profile
         if(occupationsWordList.isInList
                 && meWordList.isInList
                 && beingWordList.isInList
@@ -106,6 +112,7 @@ public class QuestionHandler {
             return;
         }
 
+        //Responses to user asking about users occupation
         if(occupationsWordList.isInList && meWordList.isInList && beingWordList.isInList) {
             if (profile.occupation == null) {
                 System.out.println("You haven't told me yet");
@@ -115,9 +122,9 @@ public class QuestionHandler {
             }
         }
 
+        //Responses to user talking or asking about users gender - also saves users gender for profile
         if(genderWordList.isInList
                 && !youWordList.isInList){
-            //TODO this is a bad way to handle multiple cases when we already have a list of all of these
             if(profile.gender == null && nextWord("am", response) != null){
                 profile.gender = nextWord("am", response);
                 System.out.println("Okay, I will remember that.");
@@ -143,11 +150,8 @@ public class QuestionHandler {
             return;
         }
 
-        //all the cases for chatbot's responses,
-        // higher position for the if statement indicates priority,
-        // as they may have return functions.
 
-        //name path
+        //Responses to user talking about user name
         if(contains("name",response)
                 && meWordList.isInList
                 && beingWordList.isInList
@@ -167,6 +171,7 @@ public class QuestionHandler {
             return;
         }
 
+        //Responses to user talking or asking about users name - also saves users name for profile
         if(contains("name",response)
                 && meWordList.isInList
                 && beingWordList.isInList
@@ -189,6 +194,7 @@ public class QuestionHandler {
             return;
         }
 
+        //Responses to user talking users age - also saves users age for profile
         if(contains("age",response)
                 &&beingWordList.isInList
                 &&meWordList.isInList){
@@ -202,6 +208,7 @@ public class QuestionHandler {
             return;
         }
 
+        //Responses to user asking users age
         if(questionWordList.isInList
                 && contains("old", response)
                 && meWordList.isInList){
@@ -215,7 +222,7 @@ public class QuestionHandler {
             return;
         }
 
-
+        //Same as above
         if(contains("years",response)
                 &&beingWordList.isInList
                 &&meWordList.isInList){
@@ -230,12 +237,15 @@ public class QuestionHandler {
             return;
         }
 
+
+        //Greeting responses
         if(heyWordList.isInList){
             if      (randomInt == 0) System.out.println("Hello to you too. ");
             else if (randomInt == 1) System.out.println("Hi there. ");
             else if (randomInt == 2) System.out.println("Hey. ");
         }
 
+        //Bad words responses - you've got 2 chances to behave!
         if (badWordList.isInList) {
             swearCounter++;
             if(swearCounter > 1){
@@ -246,6 +256,7 @@ public class QuestionHandler {
             System.out.println("Please don't swear. This is your last chance! ");
         }
 
+        //Responses for user asking questions
         if (questionWordList.isInList && !youWordList.isInList && !meWordList.isInList) {
             if (randomInt == 0) System.out.println("Wow, asking me a question are you? ");
             else if (randomInt == 1) System.out.println("What do you think? ");
@@ -261,8 +272,8 @@ public class QuestionHandler {
             }
         }
 
-        //if (youWordList.isInList && !meWordList.isInList) System.out.println("We are talking about you, not me. ");
 
+        //Responses for user talking about the chatbot
         if(youWordList.isInList && !meWordList.isInList){
             if      (randomInt == 0) System.out.println("We are talking about you, not me. ");
             else if (randomInt == 1) System.out.println("Wow... don't make it personal...");
@@ -270,11 +281,13 @@ public class QuestionHandler {
         }
 
 
-
+        //Responses for user talking about itself
         if (meWordList.isInList && !youWordList.isInList) System.out.println("Wow, you're really self-centered. ");
 
+        //Responses for when user is stating something
         if (beingWordList.isInList && !questionWordList.isInList) System.out.println("You sure?");
 
+        //Responses for when the user says something the chatbot isn't programmed for
         if (!heyWordList.isInList
                 && !meWordList.isInList
                 && !youWordList.isInList
@@ -283,6 +296,8 @@ public class QuestionHandler {
                 && !beingWordList.isInList
         ) Profile.printQuestion();
 
+
+        //Responses for user talking about user and chatbot in the same sentence
         if(youWordList.isInList && meWordList.isInList){
             if      (randomInt == 0) System.out.println("OK.");
             else if (randomInt == 1) System.out.println("Hmmm...");
@@ -294,6 +309,7 @@ public class QuestionHandler {
         memoryResponse = response;
         memoryAnswer = answer;
     }
+
 
     private void testQuestion() {
         System.out.println("Aren't you " + profile.age + " years old?");
@@ -315,6 +331,7 @@ public class QuestionHandler {
         }
     }
 
+    //Function that checks for the nextword in response
     String nextWord(String startWord, String[] response){
         if (response.length < 2){
             return response[0];
@@ -328,7 +345,7 @@ public class QuestionHandler {
         return null;
     }
 
-
+    //Function that checks the response for a specific word
     boolean contains(String word, String[] response){
         for (String responseWord: response) {
             if(responseWord.equalsIgnoreCase(word)){
