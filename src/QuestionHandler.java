@@ -1,29 +1,20 @@
-
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class QuestionHandler {
-    String[] heyWords = {"greetings" , "hi", "hello", "hey"};
-    WordList heyWordList = new WordList(heyWords);
-    String[] questionWords = {"who","why","what", "how","?"};
-    WordList questionWordList = new WordList(questionWords);
-    String[] youWords = {"you","your","yours"};
-    WordList youWordList = new WordList(youWords);
-    String[] meWords = {"me","myself","my","I", "i?"};
-    WordList meWordList = new WordList(meWords);
-    String[] beingWords = {"am","I'm","im", "you're","youre","is"};
-    WordList beingWordList = new WordList(beingWords);
-    String[] badWords = {"Fuck","Shit","Fucking","retard"};
-    WordList badWordList = new WordList(badWords);
-    String[] genderWords = {"male", "female", "non-binary", "gender"};
-    WordList genderWordList = new WordList(genderWords);
-    String[] occupationWords = {"studying", "employed", "unemployed", "occupation"};
-    WordList occupationsWordList = new WordList(occupationWords);
+    WordList heyWordList         = new WordList(new String[]{"greetings" , "hi", "hello", "hey"});
+    WordList questionWordList    = new WordList(new String[]{"who","why","what", "how","?"});
+    WordList youWordList         = new WordList(new String[]{"you","your","yours"});
+    WordList meWordList          = new WordList(new String[]{"me","myself","my","I", "i?"});
+    WordList beingWordList       = new WordList(new String[]{"am","I'm","im", "you're","youre","is"});
+    WordList badWordList         = new WordList(new String[]{"Fuck","Shit","Fucking","retard"});
+    WordList genderWordList      = new WordList(new String[]{"male", "female", "non-binary", "gender"});
+    WordList occupationsWordList = new WordList(new String[]{"studying", "employed", "unemployed", "occupation"});
     static ArrayList<WordList> wordListList = new ArrayList<>();
-    String[] memoryResponse;
-    String memoryAnswer;
-    String[] response;
-    String answer;
+    String[] memoryResponse, response;
+    String memoryAnswer,answer;
+
     Profile profile = new Profile();
 
     boolean isFinished;
@@ -115,10 +106,7 @@ public class QuestionHandler {
             return;
         }
 
-        if(occupationsWordList.isInList
-                && meWordList.isInList
-                && beingWordList.isInList
-                && questionWordList.isInList) {
+        if(occupationsWordList.isInList && meWordList.isInList && beingWordList.isInList) {
             if (profile.occupation == null) {
                 System.out.println("You haven't told me yet");
             }
@@ -129,8 +117,15 @@ public class QuestionHandler {
 
         if(genderWordList.isInList
                 && !youWordList.isInList){
-            if(profile.gender == null){
+            //TODO this is a bad way to handle multiple cases when we already have a list of all of these
+            if(profile.gender == null && nextWord("am", response) != null){
                 profile.gender = nextWord("am", response);
+                System.out.println("Okay, I will remember that.");
+            } else if (profile.gender == null && nextWord("im", response) != null) {
+                profile.gender = nextWord("im", response);
+                System.out.println("Okay, I will remember that.");
+            } else if (profile.gender == null && nextWord("i'm", response) != null) {
+                profile.gender = nextWord("i'm", response);
                 System.out.println("Okay, I will remember that.");
             } else{
                 System.out.println("Aren't you " + profile.gender + "?");
@@ -151,6 +146,8 @@ public class QuestionHandler {
         //all the cases for chatbot's responses,
         // higher position for the if statement indicates priority,
         // as they may have return functions.
+
+        //name path
         if(contains("name",response)
                 && meWordList.isInList
                 && beingWordList.isInList
@@ -205,7 +202,6 @@ public class QuestionHandler {
             return;
         }
 
-
         if(questionWordList.isInList
                 && contains("old", response)
                 && meWordList.isInList){
@@ -213,23 +209,7 @@ public class QuestionHandler {
             if(profile.age == 0){
                 System.out.println("You haven't told me yet");
             } else {
-                System.out.println("Aren't you " + profile.age + " years old?");
-                Scanner in = new Scanner(System.in);
-                String[] inputLine = in.nextLine().split(" ");
-                if(contains("no", inputLine)){
-                    System.out.println("Would you like to change your age then?");
-                    inputLine = in.nextLine().split(" ");
-                    if (contains("yes", inputLine)){
-                        System.out.println("Write your age again");
-                        inputLine = in.nextLine().split(" ");
-                        profile.age = Integer.parseInt(nextWord("am", inputLine));
-                        System.out.println("Okay you are " + profile.age + " years old");
-                    } else {
-                        System.out.println("Okay then");
-                    }
-                } else {
-                    System.out.println("Okay then");
-                }
+                testQuestion();
             }
 
             return;
@@ -244,36 +224,16 @@ public class QuestionHandler {
                 profile.age = Integer.parseInt(nextWord("am",response));
                 System.out.println("Wow you're only " + profile.age);
             } else {
-                System.out.println("Aren't you " + profile.age + " years old?");
-                Scanner in = new Scanner(System.in);
-                String[] inputLine = in.nextLine().split(" ");
-                if(contains("no", inputLine)){
-                    System.out.println("Would you like to change your age then?");
-                    inputLine = in.nextLine().split(" ");
-                    if (contains("yes", inputLine)){
-                        System.out.println("Write your age again");
-                        inputLine = in.nextLine().split(" ");
-                        profile.age = Integer.parseInt(nextWord("am", inputLine));
-                        System.out.println("Okay you are " + profile.age + " years old");
-                    } else {
-                        System.out.println("Okay then");
-                    }
-                } else {
-                    System.out.println("Okay then");
-                }
+                testQuestion();
             }
 
             return;
         }
 
         if(heyWordList.isInList){
-            if(randomInt == 0) {
-                System.out.println("Hello to you too. ");
-            } else if(randomInt == 1){
-                System.out.println("Hi there. ");
-            } else if(randomInt == 2) {
-                System.out.println("Hey. ");
-            }
+            if      (randomInt == 0) System.out.println("Hello to you too. ");
+            else if (randomInt == 1) System.out.println("Hi there. ");
+            else if (randomInt == 2) System.out.println("Hey. ");
         }
 
         if (badWordList.isInList) {
@@ -301,7 +261,15 @@ public class QuestionHandler {
             }
         }
 
-        if (youWordList.isInList && !meWordList.isInList) System.out.println("We are talking about you, not me. ");
+        //if (youWordList.isInList && !meWordList.isInList) System.out.println("We are talking about you, not me. ");
+
+        if(youWordList.isInList && !meWordList.isInList){
+            if      (randomInt == 0) System.out.println("We are talking about you, not me. ");
+            else if (randomInt == 1) System.out.println("Wow... don't make it personal...");
+            else if (randomInt == 2) System.out.println("I'm not going to respond to that.");
+        }
+
+
 
         if (meWordList.isInList && !youWordList.isInList) System.out.println("Wow, you're really self-centered. ");
 
@@ -315,29 +283,52 @@ public class QuestionHandler {
                 && !beingWordList.isInList
         ) Profile.printQuestion();
 
-        if (youWordList.isInList && meWordList.isInList){
-            System.out.println("OK.");
+        if(youWordList.isInList && meWordList.isInList){
+            if      (randomInt == 0) System.out.println("OK.");
+            else if (randomInt == 1) System.out.println("Hmmm...");
+            else if (randomInt == 2) System.out.println("Well...");
         }
+
 
         //Save your last line in memory
         memoryResponse = response;
         memoryAnswer = answer;
     }
 
-    //Function that checks the next word in response
+    private void testQuestion() {
+        System.out.println("Aren't you " + profile.age + " years old?");
+        Scanner in = new Scanner(System.in);
+        String[] inputLine = in.nextLine().split(" ");
+        if(contains("no", inputLine)){
+            System.out.println("Would you like to change your age then?");
+            inputLine = in.nextLine().split(" ");
+            if (contains("yes", inputLine)){
+                System.out.println("Write your age again");
+                inputLine = in.nextLine().split(" ");
+                profile.age = Integer.parseInt(nextWord("am", inputLine));
+                System.out.println("Okay you are " + profile.age + " years old");
+            } else {
+                System.out.println("Okay then");
+            }
+        } else {
+            System.out.println("Okay then");
+        }
+    }
+
     String nextWord(String startWord, String[] response){
         if (response.length < 2){
             return response[0];
         }
+
         for (int i = 0; i < response.length; i++) {
-            if(response[i+1] != null && startWord.equalsIgnoreCase(response[i])){
+            if(i+1 < response.length && response[i+1] != null && startWord.equalsIgnoreCase(response[i])){
                 return response[i+1];
             }
         }
-        return "";
+        return null;
     }
 
-   //Function that checks for a specific word in response
+
     boolean contains(String word, String[] response){
         for (String responseWord: response) {
             if(responseWord.equalsIgnoreCase(word)){
